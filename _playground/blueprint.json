@@ -2,7 +2,7 @@
 	"landingPage": "/wp-admin/post.php?post=10&action=edit",
 	"login": true,
 	"plugins": [
-		"https://raw.githubusercontent.com/WordPress/block-development-examples/deploy/zips/plugin-sidebar-9ee4a6.zip"
+		"https://github.com/leogopal/gutenberg-edit-pages-panel/blob/f20e08808e654d532dac8c12f5564f5d96d3499a/gutenberg-edit-pages-panel.zip"
 	],
 	"steps": [
 		{
@@ -12,7 +12,7 @@
 			"step": "importWxr",
 			"file": {
 				"resource": "url",
-				"url": "https://raw.githubusercontent.com/WordPress/block-development-examples/trunk/plugins/plugin-sidebar-9ee4a6/_playground/export.xml"
+				"url": "https://github.com/leogopal/gutenberg-edit-pages-panel/blob/f20e08808e654d532dac8c12f5564f5d96d3499a/_playground/export.xml"
 			}
 		}
 	]
