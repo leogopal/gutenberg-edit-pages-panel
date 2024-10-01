@@ -1,0 +1,41 @@
+{
+	"name": "@gutenberg/edit-pages-panel",
+	"version": "0.1.0",
+	"author": "Hostinger",
+	"license": "GPL-2.0-or-later",
+	"description": "Add an Edit Pages resource to Gutenberg to search, list, and Edit Pages",
+	"scripts": {
+		"check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"test:e2e": "wp-scripts test-e2e",
+		"test:unit": "wp-scripts test-unit-js",
+		"packages-update": "wp-scripts packages-update",
+		"build": "wp-scripts build",
+		"start": "wp-scripts start"
+	},
+	"files": [
+		"*"
+	],
+	"devDependencies": {
+		"@wordpress/components": "*",
+		"@wordpress/core-data": "*",
+		"@wordpress/edit-post": "^8.8.3",
+		"@wordpress/editor": "*",
+		"@wordpress/interactivity": "^6.8.2",
+		"@wordpress/plugins": "^7.8.2",
+		"@wordpress/scripts": "*"
+	},
+	"dependencies": {
+		"@testing-library/react": "^16.0.1",
+		"@wordpress/data": "^10.8.3",
+		"@wordpress/element": "^6.8.1",
+		"@wordpress/i18n": "^5.8.2",
+		"@wordpress/notices": "^5.8.3",
+		"update": "^0.4.2"
+	}
+}
