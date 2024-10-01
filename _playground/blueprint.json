@@ -1,8 +1,7 @@
 {
 	"landingPage": "/wp-admin/post.php?post=10&action=edit",
-	"login": true,
 	"plugins": [
-		"https://github.com/leogopal/gutenberg-edit-pages-panel/blob/f20e08808e654d532dac8c12f5564f5d96d3499a/gutenberg-edit-pages-panel.zip"
+		"https://raw.githubusercontent.com/leogopal/gutenberg-edit-pages-panel/main/gutenberg-edit-pages-panel.zip"
 	],
 	"steps": [
 		{
@@ -12,8 +11,19 @@
 			"step": "importWxr",
 			"file": {
 				"resource": "url",
-				"url": "https://github.com/leogopal/gutenberg-edit-pages-panel/blob/f20e08808e654d532dac8c12f5564f5d96d3499a/_playground/export.xml"
+				"url": "https://raw.githubusercontent.com/leogopal/gutenberg-edit-pages-panel/main/_playground/export.xml"
 			}
 		}
-	]
+	],
+	"preferredVersions": {
+		"php": "8.2",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"phpExtensionBundles": [
+		"kitchen-sink"
+	],
+	"login": true
 }
