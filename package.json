@@ -1,7 +1,7 @@
 {
-	"name": "@gutenberg/edit-pages-panel",
+	"name": "gutenberg-edit-pages-panel",
 	"version": "0.1.0",
-	"author": "Hostinger",
+	"author": "leogopal",
 	"license": "GPL-2.0-or-later",
 	"description": "Add an Edit Pages resource to Gutenberg to search, list, and Edit Pages",
 	"scripts": {
@@ -15,6 +15,7 @@
 		"test:e2e": "wp-scripts test-e2e",
 		"test:unit": "wp-scripts test-unit-js",
 		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
 		"build": "wp-scripts build",
 		"start": "wp-scripts start"
 	},
