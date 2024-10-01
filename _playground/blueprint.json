@@ -8,6 +8,13 @@
 			"step": "resetData"
 		},
 		{
+			"step": "installPlugin",
+			"pluginZipFile": {
+				"resource": "url",
+				"url": "https://raw.githubusercontent.com/leogopal/gutenberg-edit-pages-panel/main/gutenberg-edit-pages-panel.zip"
+			}
+		},
+		{
 			"step": "importWxr",
 			"file": {
 				"resource": "url",
