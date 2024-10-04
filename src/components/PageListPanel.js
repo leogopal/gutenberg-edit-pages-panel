@@ -1,21 +1,56 @@
 // src/components/PageListPanel.js
-import { Panel, PanelBody } from '@wordpress/components';
+import {
+	Panel, PanelBody, Text, PluginDocumentSettingPanel
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import SearchBar from './SearchBar';
 import { CreatePageButton, PagesList } from './index';
+import PropTypes from 'prop-types';
+import { Flex, FlexBlock, FlexItem, TextHighlight } from '@wordpress/components';
+
 
 const PageListPanel = ({ searchTerm, setSearchTerm, hasResolved, pages, currentPage }) => {
 	return (
-		<Panel className="gutenberg-edit-pages-panel">
-			<PanelBody title={__('Search Pages', 'plugin-domain')} initialOpen>
-				<SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-				<hr />
-				<PagesList hasResolved={hasResolved} pages={pages} currentPage={currentPage} />
-				<hr />
-				<CreatePageButton />
-			</PanelBody>
-		</Panel>
+		<>
+			<Flex
+				align='center'
+				justify='space-between'
+				direction='column'
+				style={
+					{
+						marginBottom: '1rem',
+						padding: '1rem',
+					}
+				}
+			>
+				<FlexBlock>
+					<p>
+						Search for pages to edit or create a new one.
+					</p>
+					<CreatePageButton />
+					<hr />
+					<FlexItem>
+						<SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+						<hr />
+					</FlexItem>
+
+					<FlexItem>
+						<PagesList hasResolved={hasResolved} pages={pages} searchText={setSearchTerm} currentPage={currentPage} />
+						<hr />
+					</FlexItem>
+				</FlexBlock>
+			</Flex>
+		</>
 	);
 };
 
 export default PageListPanel;
+
+// src/components/PageListPanel.js
+PageListPanel.propTypes = {
+	searchTerm: PropTypes.string.isRequired,
+	setSearchTerm: PropTypes.func.isRequired,
+	hasResolved: PropTypes.bool.isRequired,
+	pages: PropTypes.array.isRequired,
+	currentPage: PropTypes.number.isRequired,
+};

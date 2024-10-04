@@ -1,11 +1,16 @@
 // src/components/PagesList.js
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { Button, ButtonGroup, Spinner } from '@wordpress/components';
+import { Button, ButtonGroup, Spinner, TextHighlight } from '@wordpress/components';
 import { decodeEntities } from '@wordpress/html-entities';
 import DeletePageButton from './DeletePageButton';
 
-
+const SearchHighlight = ({ searchText, text }) => (
+	<TextHighlight
+		text={decodeEntities(text)}
+		highlight={searchText}
+	/>
+);
 const PageEditButton = ({ postID }) => (
 	<Button
 		variant="primary"
@@ -22,7 +27,7 @@ const PageEditButton = ({ postID }) => (
 	</Button>
 );
 
-const PagesList = ({ hasResolved, pages, currentPage }) => {
+const PagesList = ({ hasResolved, pages, searchText, currentPage }) => {
 	if (!hasResolved) {
 		return <p><Spinner /> {__('Loading...', 'hostinger-easy-onboarding')}</p>;
 	}
@@ -44,8 +49,10 @@ const PagesList = ({ hasResolved, pages, currentPage }) => {
 				</tr>
 			</thead>
 			<tbody>{pages?.map((page) => (
-				<tr key={page.id}>
-					<td>{decodeEntities(page.title.rendered)}</td>
+				<tr key={page.id} >
+					<td>
+						{decodeEntities(page.title.rendered)}
+					</td>
 					<td>
 						{currentPage !== page.id ? (
 							<ButtonGroup>
@@ -63,7 +70,7 @@ const PagesList = ({ hasResolved, pages, currentPage }) => {
 
 			))}
 			</tbody>
-		</table>
+		</table >
 	);
 };
 

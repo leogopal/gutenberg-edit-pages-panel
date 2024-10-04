@@ -465,9 +465,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _SearchBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SearchBar */ "./src/components/SearchBar.js");
 /* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./index */ "./src/components/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__);
 // src/components/PageListPanel.js
+
+
 
 
 
@@ -480,23 +484,45 @@ const PageListPanel = ({
   pages,
   currentPage
 }) => {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Panel, {
-    className: "gutenberg-edit-pages-panel",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.PanelBody, {
-      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search Pages', 'plugin-domain'),
-      initialOpen: true,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_SearchBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        searchTerm: searchTerm,
-        setSearchTerm: setSearchTerm
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_index__WEBPACK_IMPORTED_MODULE_3__.PagesList, {
-        hasResolved: hasResolved,
-        pages: pages,
-        currentPage: currentPage
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_index__WEBPACK_IMPORTED_MODULE_3__.CreatePageButton, {})]
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Flex, {
+      align: "center",
+      justify: "space-between",
+      direction: "column",
+      style: {
+        marginBottom: '1rem',
+        padding: '1rem'
+      },
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.FlexBlock, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          children: "Search for pages to edit or create a new one."
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_index__WEBPACK_IMPORTED_MODULE_3__.CreatePageButton, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.FlexItem, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_SearchBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
+            searchTerm: searchTerm,
+            setSearchTerm: setSearchTerm
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {})]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.FlexItem, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_index__WEBPACK_IMPORTED_MODULE_3__.PagesList, {
+            hasResolved: hasResolved,
+            pages: pages,
+            searchText: setSearchTerm,
+            currentPage: currentPage
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {})]
+        })]
+      })
     })
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PageListPanel);
+
+// src/components/PageListPanel.js
+PageListPanel.propTypes = {
+  searchTerm: (prop_types__WEBPACK_IMPORTED_MODULE_5___default().string).isRequired,
+  setSearchTerm: (prop_types__WEBPACK_IMPORTED_MODULE_5___default().func).isRequired,
+  hasResolved: (prop_types__WEBPACK_IMPORTED_MODULE_5___default().bool).isRequired,
+  pages: (prop_types__WEBPACK_IMPORTED_MODULE_5___default().array).isRequired,
+  currentPage: (prop_types__WEBPACK_IMPORTED_MODULE_5___default().number).isRequired
+};
 
 /***/ }),
 
@@ -529,6 +555,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const SearchHighlight = ({
+  searchText,
+  text
+}) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.TextHighlight, {
+  text: (0,_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_2__.decodeEntities)(text),
+  highlight: searchText
+});
 const PageEditButton = ({
   postID
 }) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
@@ -546,6 +579,7 @@ const PageEditButton = ({
 const PagesList = ({
   hasResolved,
   pages,
+  searchText,
   currentPage
 }) => {
   if (!hasResolved) {
@@ -618,24 +652,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
 // src/components/SearchBar.js
 
 
 
+
 const SearchBar = ({
   searchTerm,
-  setSearchTerm
+  setSearchTerm,
+  placeholder,
+  helpText
 }) => {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SearchControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search pages', 'plugin-domain'),
-    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search pages', 'plugin-domain'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search pages', 'hostinger-easy-onboarding'),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search pages', 'hostinger-easy-onboarding'),
     onChange: setSearchTerm,
     value: searchTerm,
     className: "gutenberg-edit-pages-search",
-    help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Search for pages by title', 'plugin-domain')
+    "aria-label": "Search"
   });
+};
+SearchBar.propTypes = {
+  searchTerm: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string).isRequired,
+  setSearchTerm: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func).isRequired,
+  placeholder: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string)
+};
+SearchBar.defaultProps = {
+  placeholder: 'Search...'
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (SearchBar);
 
@@ -760,6 +807,46 @@ __webpack_require__.r(__webpack_exports__);
  * @exports Notifications
  */
 
+
+/***/ }),
+
+/***/ "./src/hooks/useDebounce.js":
+/*!**********************************!*\
+  !*** ./src/hooks/useDebounce.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+// src/hooks/useDebounce.js
+
+
+
+/**
+ * Custom hook for debouncing a value.
+ *
+ * @param {any} value - The value to debounce.
+ * @param {number} delay - The debounce delay in milliseconds.
+ * @returns {any} - The debounced value after the specified delay.
+ */
+const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(value);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    // Set a timeout to update the debounced value after the delay
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+
+    // Cleanup function to clear the timeout if the effect reruns before the delay completes
+    return () => clearTimeout(handler);
+  }, [value, delay]); // Re-run effect only if value or delay changes
+
+  return debouncedValue;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (useDebounce);
 
 /***/ }),
 
@@ -2052,31 +2139,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_PageListPanel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/PageListPanel */ "./src/components/PageListPanel.js");
 /* harmony import */ var _components_Notifications__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Notifications */ "./src/components/Notifications.js");
 /* harmony import */ var _components_editPagesIcon__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/editPagesIcon */ "./src/components/editPagesIcon.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__);
-// src/gutenberg_edit_pages.js
+/* harmony import */ var _hooks_useDebounce__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./hooks/useDebounce */ "./src/hooks/useDebounce.js");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _components_SearchBar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/SearchBar */ "./src/components/SearchBar.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__);
+// src/index.js
 
 
 
 
 
+
+
+
+ // Import the debounce hook
 
 
 
 const PluginSidebar = wp.editor.PluginSidebar;
+const PluginSidebarMoreMenuItem = wp.editor.PluginSidebarMoreMenuItem;
+const PluginDocumentSettingPanel = wp.editor.PluginDocumentSettingPanel;
 
-// Debounce Hook
-const useDebounce = (value, delay) => {
-  const [debouncedValue, setDebouncedValue] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(value);
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
-    const handler = setTimeout(() => setDebouncedValue(value), delay);
-    return () => clearTimeout(handler);
-  }, [value, delay]);
-  return debouncedValue;
-};
+// Icon from Dashicons
+const icon = 'edit-page';
+
+/**
+ * PagesSearchControl Component
+ * Handles the sidebar rendering for searching and listing pages in Gutenberg editor.
+ */
 const PagesSearchControl = () => {
   const [searchTerm, setSearchTerm] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)('');
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const debouncedSearchTerm = (0,_hooks_useDebounce__WEBPACK_IMPORTED_MODULE_7__["default"])(searchTerm, 300);
+
+  // Fetch pages data using useSelect hook with the debounced search term
   const {
     pages,
     hasResolved,
@@ -2092,20 +2189,29 @@ const PagesSearchControl = () => {
       hasResolved: select('core').hasFinishedResolution('getEntityRecords', ['postType', 'page', query])
     };
   }, [debouncedSearchTerm]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(PluginSidebar, {
-    name: "gutenberg_edit_pages",
-    icon: _components_editPagesIcon__WEBPACK_IMPORTED_MODULE_6__["default"],
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Edit Pages', 'plugin-domain'),
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_PageListPanel__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      searchTerm: searchTerm,
-      setSearchTerm: setSearchTerm,
-      hasResolved: hasResolved,
-      pages: pages,
-      currentPage: currentPage
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_Notifications__WEBPACK_IMPORTED_MODULE_5__["default"], {})]
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(PluginSidebarMoreMenuItem, {
+      target: "gutenberg-edit-pages-panel",
+      icon: icon,
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Edit Pages', 'hostinger-easy-onboarding')
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(PluginSidebar, {
+      name: "gutenberg-edit-pages-panel",
+      icon: icon,
+      title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Edit Pages', 'hostinger-easy-onboarding'),
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_PageListPanel__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        searchTerm: searchTerm,
+        setSearchTerm: setSearchTerm,
+        searchText: searchTerm,
+        hasResolved: hasResolved,
+        pages: pages,
+        currentPage: currentPage
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Notifications__WEBPACK_IMPORTED_MODULE_5__["default"], {})]
+    })]
   });
 };
-(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_3__.registerPlugin)('gutenberg-edit-pages', {
+
+// Register the plugin with the Gutenberg editor
+(0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_3__.registerPlugin)('gutenberg-edit-pages-panel', {
   render: PagesSearchControl
 });
 })();
