@@ -17,20 +17,20 @@ import DeletePageButton from './DeletePageButton';
  *   <PageEditButton postID={1} />
  * )
  */
-const PageEditButton = ({ postID }) => (
-    <Button
-        variant="primary"
-        href={`/wp-admin/post.php?post=${postID}&action=edit`}
-        size="small"
-        tooltip={__('Edit Page', 'hostinger-easy-onboarding')}
-        showTooltip={true}
-        label={__('Edit Page', 'hostinger-easy-onboarding')}
-        icon="edit"
-        iconSize={12}
-        className="edit-page-button"
-    >
-        {__('Edit', 'hostinger-easy-onboarding')}
-    </Button>
+const PageEditButton = ( { postID } ) => (
+	<Button
+		variant="primary"
+		href={ `/wp-admin/post.php?post=${ postID }&action=edit` }
+		size="small"
+		tooltip={ __( 'Edit Page', 'hostinger-easy-onboarding' ) }
+		showTooltip={ true }
+		label={ __( 'Edit Page', 'hostinger-easy-onboarding' ) }
+		icon="edit"
+		iconSize={ 12 }
+		className="edit-page-button"
+	>
+		{ __( 'Edit', 'hostinger-easy-onboarding' ) }
+	</Button>
 );
 
 /**
@@ -49,45 +49,58 @@ const PageEditButton = ({ postID }) => (
  *   <PagesList hasResolved={true} pages={pages} />
  * )
  */
-export default function PagesList({ hasResolved, pages, currentPage = null }) {
-    const [error, setError] = useState(null);
+export default function PagesList( {
+	hasResolved,
+	pages,
+	currentPage = null,
+} ) {
+	const [ error, setError ] = useState( null );
 
-    useEffect(() => {
-        if (error) {
-            console.error(error);
-        }
-    }, [error]);
+	useEffect( () => {
+		if ( error ) {
+			console.error( error );
+		}
+	}, [ error ] );
 
-    if (!hasResolved) {
-        return <Spinner />;
-    }
-    if (!pages?.length) {
-        return <div>{__('No results', 'hostinger-easy-onboarding')}</div>;
-    }
+	if ( ! hasResolved ) {
+		return <Spinner />;
+	}
+	if ( ! pages?.length ) {
+		return <div>{ __( 'No results', 'hostinger-easy-onboarding' ) }</div>;
+	}
 
-    return (
-        <table className="wp-list-table widefat fixed striped table-view-list">
-            <thead>
-                <tr>
-                    <th className="manage-column column-primary">{__('Title', 'hostinger-easy-onboarding')}</th>
-                    <th className="manage-column" style={{ width: 120 }}>{__('Actions', 'hostinger-easy-onboarding')}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {pages?.map((page) => (
-                    <tr key={page.id}>
-                        <td>{decodeEntities(page.title.rendered)}</td>
-                        <td>
-                            {currentPage !== page.id ? (
-                                <ButtonGroup>
-                                    <PageEditButton postID={page.id} />
-                                    <DeletePageButton pageId={page.id} />
-                                </ButtonGroup>
-                            ) : __('Current page', 'hostinger-easy-onboarding')}
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    );
+	return (
+		<table className="wp-list-table widefat fixed striped table-view-list">
+			<thead>
+				<tr>
+					<th className="manage-column column-primary">
+						{ __( 'Title', 'hostinger-easy-onboarding' ) }
+					</th>
+					<th className="manage-column" style={ { width: 120 } }>
+						{ __( 'Actions', 'hostinger-easy-onboarding' ) }
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				{ pages?.map( ( page ) => (
+					<tr key={ page.id }>
+						<td>{ decodeEntities( page.title.rendered ) }</td>
+						<td>
+							{ currentPage !== page.id ? (
+								<ButtonGroup>
+									<PageEditButton postID={ page.id } />
+									<DeletePageButton pageId={ page.id } />
+								</ButtonGroup>
+							) : (
+								__(
+									'Current page',
+									'hostinger-easy-onboarding'
+								)
+							) }
+						</td>
+					</tr>
+				) ) }
+			</tbody>
+		</table>
+	);
 }

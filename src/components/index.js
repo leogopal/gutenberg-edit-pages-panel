@@ -20,13 +20,13 @@ import PageForm from './PageForm';
  * Import the CreatePageForm component from the createPageForm module.
  * @module CreatePageForm
  */
-import CreatePageForm from "./CreatePageForm";
+import CreatePageForm from './CreatePageForm';
 
 /**
  * Import the CreatePageButton component from the createPageButton module.
  * @module CreatePageButton
  */
-import CreatePageButton from "./CreatePageButton";
+import CreatePageButton from './CreatePageButton';
 
 /**
  * Import the Notifications component from the Notifications module.
@@ -46,11 +46,11 @@ import DeletePageButton from './DeletePageButton';
  * @exports Notifications
  */
 export {
-    PagesList,
-    editPagesIcon,
-    PageForm,
-    CreatePageForm,
-    CreatePageButton,
-    Notifications,
-	DeletePageButton
+	PagesList,
+	editPagesIcon,
+	PageForm,
+	CreatePageForm,
+	CreatePageButton,
+	Notifications,
+	DeletePageButton,
 };

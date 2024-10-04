@@ -26,56 +26,65 @@ import { __ } from '@wordpress/i18n';
  *   />
  * )
  */
-export default function PageForm({
-    title,
-    onChangeTitle,
-    hasEdits,
-    lastError,
-    isSaving,
-    onCancel,
-    onSave,
-}) {
-    return (
-        <div className="my-gutenberg-form">
-            <TextControl
-                label={__('Page title:', 'hostinger-easy-onboarding')}
-                value={title}
-                onChange={onChangeTitle}
-            />
-            {lastError ? (
-                <div className="form-error">
-                    {__('Error:', 'hostinger-easy-onboarding')} {lastError.message}
-                </div>
-            ) : false}
-            <div className="form-buttons">
-                <Button
-                    onClick={async () => {
-                        try {
-                            await onSave();
-                        } catch (error) {
-                            console.error(__('An error occurred while saving:', 'hostinger-easy-onboarding'), error);
-                        }
-                    }}
-                    variant="primary"
-                    disabled={!hasEdits || isSaving}
-                >
-                    {isSaving ? (
-                        <>
-                            <Spinner />
-                            {__('Saving', 'hostinger-easy-onboarding')}
-                        </>
-                    ) : (
-                        __('Save', 'hostinger-easy-onboarding')
-                    )}
-                </Button>
-                <Button
-                    onClick={onCancel}
-                    variant="tertiary"
-                    disabled={isSaving}
-                >
-                    {__('Cancel', 'hostinger-easy-onboarding')}
-                </Button>
-            </div>
-        </div>
-    );
+export default function PageForm( {
+	title,
+	onChangeTitle,
+	hasEdits,
+	lastError,
+	isSaving,
+	onCancel,
+	onSave,
+} ) {
+	return (
+		<div className="my-gutenberg-form">
+			<TextControl
+				label={ __( 'Page title:', 'hostinger-easy-onboarding' ) }
+				value={ title }
+				onChange={ onChangeTitle }
+			/>
+			{ lastError ? (
+				<div className="form-error">
+					{ __( 'Error:', 'hostinger-easy-onboarding' ) }{ ' ' }
+					{ lastError.message }
+				</div>
+			) : (
+				false
+			) }
+			<div className="form-buttons">
+				<Button
+					onClick={ async () => {
+						try {
+							await onSave();
+						} catch ( error ) {
+							console.error(
+								__(
+									'An error occurred while saving:',
+									'hostinger-easy-onboarding'
+								),
+								error
+							);
+						}
+					} }
+					variant="primary"
+					disabled={ ! hasEdits || isSaving }
+				>
+					{ isSaving ? (
+						<>
+							<Spinner />
+							{ __( 'Saving', 'hostinger-easy-onboarding' ) }
+						</>
+					) : (
+						__( 'Save', 'hostinger-easy-onboarding' )
+					) }
+				</Button>
+				<Button
+					onClick={ onCancel }
+					variant="tertiary"
+					disabled={ isSaving }
+				>
+					{ __( 'Cancel', 'hostinger-easy-onboarding' ) }
+				</Button>
+			</div>
+		</div>
+	);
 }

@@ -7,7 +7,7 @@
 	"scripts": {
 		"check-engines": "wp-scripts check-engines",
 		"check-licenses": "wp-scripts check-licenses",
-		"format": "wp-scripts format",
+		"format": "wp-scripts format ./src",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
 		"lint:md:docs": "wp-scripts lint-md-docs",
@@ -15,6 +15,7 @@
 		"test:e2e": "wp-scripts test-e2e",
 		"test:unit": "wp-scripts test-unit-js",
 		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
 		"build": "wp-scripts build",
 		"start": "wp-scripts start"
 	},
@@ -36,6 +37,6 @@
 		"@wordpress/element": "^6.8.1",
 		"@wordpress/i18n": "^5.8.2",
 		"@wordpress/notices": "^5.8.3",
-		"update": "^0.4.2"
+		"update": "^0.7.4"
 	}
 }

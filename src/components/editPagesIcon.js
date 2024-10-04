@@ -1,4 +1,4 @@
-import {Icon} from '@wordpress/components';
+import { Icon } from '@wordpress/components';
 
 /**
  * editPagesIcon component renders an SVG icon for editing pages.
