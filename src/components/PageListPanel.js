@@ -31,12 +31,7 @@ const PageListPanel = ({ searchTerm, setSearchTerm, hasResolved, pages, currentP
 					<hr />
 					<FlexItem>
 						<SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-						<hr />
-					</FlexItem>
-
-					<FlexItem>
 						<PagesList hasResolved={hasResolved} pages={pages} searchText={setSearchTerm} currentPage={currentPage} />
-						<hr />
 					</FlexItem>
 				</FlexBlock>
 			</Flex>

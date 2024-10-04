@@ -8,6 +8,7 @@ import PageListPanel from './components/PageListPanel';
 import Notifications from './components/Notifications';
 import editPagesIcon from './components/editPagesIcon';
 import useDebounce from './hooks/useDebounce'; // Import the debounce hook
+import { store as coreDataStore } from '@wordpress/core-data';
 import { Flex, FlexItem, FlexBlock, TextHighlight } from '@wordpress/components';
 import SearchBar from './components/SearchBar';
 
@@ -32,13 +33,25 @@ const PagesSearchControl = () => {
 	const { pages, hasResolved, currentPage } = useSelect(
 		(select) => {
 
-			const query = debouncedSearchTerm ? { search: debouncedSearchTerm } : {};
-			const records = select('core').getEntityRecords('postType', 'page', query);
+			const query = {};
+
+
+			if (debouncedSearchTerm) {
+				query.search = debouncedSearchTerm;
+			}
+
+			const selectorArgs = ['postType', 'page', query];
+			const records = select(coreDataStore).getEntityRecords(
+				...selectorArgs
+			);
 
 			return {
 				pages: records || [],
 				currentPage: wp.data.select('core/editor').getCurrentPostId(),
-				hasResolved: select('core').hasFinishedResolution('getEntityRecords', ['postType', 'page', query])
+				hasResolved: select(coreDataStore).hasFinishedResolution(
+					'getEntityRecords',
+					selectorArgs
+				),
 			};
 		},
 		[debouncedSearchTerm]

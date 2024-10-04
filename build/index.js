@@ -50,7 +50,8 @@ function CreatePageButton() {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
       onClick: openModal,
       variant: "primary",
-      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Create a new Page', 'hostinger-easy-onboarding')
+      icon: 'plus',
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Add new Page', 'hostinger-easy-onboarding')
     }), isOpen && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
       onRequestClose: closeModal,
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Create a new page', 'hostinger-easy-onboarding'),
@@ -500,14 +501,12 @@ const PageListPanel = ({
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_SearchBar__WEBPACK_IMPORTED_MODULE_2__["default"], {
             searchTerm: searchTerm,
             setSearchTerm: setSearchTerm
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {})]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.FlexItem, {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_index__WEBPACK_IMPORTED_MODULE_3__.PagesList, {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_index__WEBPACK_IMPORTED_MODULE_3__.PagesList, {
             hasResolved: hasResolved,
             pages: pages,
             searchText: setSearchTerm,
             currentPage: currentPage
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {})]
+          })]
         })]
       })
     })
@@ -2140,11 +2139,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Notifications__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Notifications */ "./src/components/Notifications.js");
 /* harmony import */ var _components_editPagesIcon__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/editPagesIcon */ "./src/components/editPagesIcon.js");
 /* harmony import */ var _hooks_useDebounce__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./hooks/useDebounce */ "./src/hooks/useDebounce.js");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _components_SearchBar__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/SearchBar */ "./src/components/SearchBar.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/core-data */ "@wordpress/core-data");
+/* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _components_SearchBar__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/SearchBar */ "./src/components/SearchBar.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__);
 // src/index.js
 
 
@@ -2155,6 +2156,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
  // Import the debounce hook
+
 
 
 
@@ -2179,33 +2181,35 @@ const PagesSearchControl = () => {
     hasResolved,
     currentPage
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(select => {
-    const query = debouncedSearchTerm ? {
-      search: debouncedSearchTerm
-    } : {};
-    const records = select('core').getEntityRecords('postType', 'page', query);
+    const query = {};
+    if (debouncedSearchTerm) {
+      query.search = debouncedSearchTerm;
+    }
+    const selectorArgs = ['postType', 'page', query];
+    const records = select(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_8__.store).getEntityRecords(...selectorArgs);
     return {
       pages: records || [],
       currentPage: wp.data.select('core/editor').getCurrentPostId(),
-      hasResolved: select('core').hasFinishedResolution('getEntityRecords', ['postType', 'page', query])
+      hasResolved: select(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_8__.store).hasFinishedResolution('getEntityRecords', selectorArgs)
     };
   }, [debouncedSearchTerm]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(PluginSidebarMoreMenuItem, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(PluginSidebarMoreMenuItem, {
       target: "gutenberg-edit-pages-panel",
       icon: icon,
       children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Edit Pages', 'hostinger-easy-onboarding')
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(PluginSidebar, {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(PluginSidebar, {
       name: "gutenberg-edit-pages-panel",
       icon: icon,
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Edit Pages', 'hostinger-easy-onboarding'),
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_PageListPanel__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_components_PageListPanel__WEBPACK_IMPORTED_MODULE_4__["default"], {
         searchTerm: searchTerm,
         setSearchTerm: setSearchTerm,
         searchText: searchTerm,
         hasResolved: hasResolved,
         pages: pages,
         currentPage: currentPage
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Notifications__WEBPACK_IMPORTED_MODULE_5__["default"], {})]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_components_Notifications__WEBPACK_IMPORTED_MODULE_5__["default"], {})]
     })]
   });
 };
