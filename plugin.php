@@ -8,25 +8,44 @@
  * Author:            leogopal
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       lg-gutenberg-edit-pages-panel
+ * Text Domain:       hostinger-easy-onboarding
  *
  * @package           gutenberg-edit-pages-panel
  */
 
+defined('ABSPATH') || exit;
+
+// Add a custom block category
 add_action(
 	'enqueue_block_editor_assets',
 	function () {
-		$gutenberg_edit_pages = plugin_dir_path(__FILE__) . 'build/gutenberg_edit_pages.asset.php';
+		wp_enqueue_script(
+			'gutenberg_edit_pages_panel-script',
+			plugin_dir_url(__FILE__) . 'build/index.js',
+			array(
+				'react-jsx-runtime',
+				'wp-components',
+				'wp-core-data',
+				'wp-data',
+				'wp-element',
+				'wp-html-entities',
+				'wp-i18n',
+				'wp-notices',
+				'wp-plugins'
+			),
+			filemtime(plugin_dir_path(__FILE__) . 'build/index.js'),
+			true
+		);
 
-		if (file_exists($gutenberg_edit_pages)) {
-			$assets = include $gutenberg_edit_pages;
-			wp_enqueue_script(
-				'gutenberg_edit_pages',
-				plugin_dir_url(__FILE__) . 'build/gutenberg_edit_pages.js',
-				$assets['dependencies'],
-				$assets['version'],
-				true
-			);
-		}
+		wp_enqueue_style(
+			'gutenberg_edit_pages_panel-css',
+			plugin_dir_url(__FILE__) . 'build/style-index.css',
+			array(),
+			filemtime(plugin_dir_path(__FILE__) . 'build/style-index.css')
+		);
+
+		load_plugin_textdomain('hostinger-easy-onboarding', false, plugin_dir_path(__FILE__) . 'languages');
+		wp_set_script_translations('gutenberg_edit_pages_panel-script', 'hostinger-easy-onboarding', plugin_dir_path(__FILE__) . 'languages');
 	}
+
 );

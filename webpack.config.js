@@ -9,7 +9,6 @@ module.exports = {
 	...defaultConfig,
 	entry: {
 		...getWebpackEntryPoints(),
-		gutenberg_edit_pages: './src/gutenberg_edit_pages.js',
-		style: './src/styles.scss',
+		index: './src/index.js',
 	},
 };
