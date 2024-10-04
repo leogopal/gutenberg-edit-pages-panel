@@ -1,4 +1,5 @@
-import {Button, Spinner, TextControl} from '@wordpress/components';
+import { Button, Spinner, TextControl } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 /**
  * PageForm component renders a form for creating or editing a page.
@@ -25,49 +26,56 @@ import {Button, Spinner, TextControl} from '@wordpress/components';
  *   />
  * )
  */
-export default function PageForm(
-	{
-		title,
-		onChangeTitle,
-		hasEdits,
-		lastError,
-		isSaving,
-		onCancel,
-		onSave,
-	}) {
-	return (
-		<div className="my-gutenberg-form">
-			<TextControl
-				label="Page title:"
-				value={title}
-				onChange={onChangeTitle}
-			/>
-			{lastError ? (
-				<div className="form-error">Error: {lastError.message}</div>
-			) : false}
-			<div className="form-buttons">
-				<Button
-					onClick={onSave}
-					variant="primary"
-					disabled={!hasEdits || isSaving}
-				>
-					{isSaving ? (
-						<>
-							<Spinner/>
-							Saving
-						</>
-					) : (
-						'Save'
-					)}
-				</Button>
-				<Button
-					onClick={onCancel}
-					variant="tertiary"
-					disabled={isSaving}
-				>
-					Cancel
-				</Button>
-			</div>
-		</div>
-	);
+export default function PageForm({
+    title,
+    onChangeTitle,
+    hasEdits,
+    lastError,
+    isSaving,
+    onCancel,
+    onSave,
+}) {
+    return (
+        <div className="my-gutenberg-form">
+            <TextControl
+                label={__('Page title:', 'hostinger-easy-onboarding')}
+                value={title}
+                onChange={onChangeTitle}
+            />
+            {lastError ? (
+                <div className="form-error">
+                    {__('Error:', 'hostinger-easy-onboarding')} {lastError.message}
+                </div>
+            ) : false}
+            <div className="form-buttons">
+                <Button
+                    onClick={async () => {
+                        try {
+                            await onSave();
+                        } catch (error) {
+                            console.error(__('An error occurred while saving:', 'hostinger-easy-onboarding'), error);
+                        }
+                    }}
+                    variant="primary"
+                    disabled={!hasEdits || isSaving}
+                >
+                    {isSaving ? (
+                        <>
+                            <Spinner />
+                            {__('Saving', 'hostinger-easy-onboarding')}
+                        </>
+                    ) : (
+                        __('Save', 'hostinger-easy-onboarding')
+                    )}
+                </Button>
+                <Button
+                    onClick={onCancel}
+                    variant="tertiary"
+                    disabled={isSaving}
+                >
+                    {__('Cancel', 'hostinger-easy-onboarding')}
+                </Button>
+            </div>
+        </div>
+    );
 }

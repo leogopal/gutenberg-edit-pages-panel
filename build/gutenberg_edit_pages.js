@@ -130,26 +130,33 @@ function CreatePageForm({
    * It saves the new page and shows a success or error notice.
    */
   const handleSave = async () => {
-    const savedRecord = await saveEntityRecord('postType', 'page', {
-      title,
-      status: 'publish'
-    });
-    if (savedRecord) {
-      onSaveFinished();
-      // Tell the user the operation succeeded:
-      await createSuccessNotice(sprintf(/* translators: %s: page title */
-      (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('The page %s was created!', 'hostinger-easy-onboarding'), savedRecord.title.rendered), {
-        type: 'snackbar',
-        actions: [{
-          url: savedRecord.link,
-          label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('View post', 'hostinger-easy-onboarding')
-        }],
-        politeness: 'assertive',
-        explicitDismiss: true
+    try {
+      const savedRecord = await saveEntityRecord('postType', 'page', {
+        title,
+        status: 'publish'
       });
-    } else {
-      // Tell the user the operation failed:
-      await createErrorNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Failed to create the page', 'hostinger-easy-onboarding'), {
+      if (savedRecord) {
+        onSaveFinished();
+        // Tell the user the operation succeeded:
+        await createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.sprintf)(/* translators: %s: page title */
+        (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('The page %s was created!', 'hostinger-easy-onboarding'), savedRecord.title.rendered), {
+          type: 'snackbar',
+          actions: [{
+            url: savedRecord.link,
+            label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('View post', 'hostinger-easy-onboarding')
+          }],
+          politeness: 'assertive',
+          explicitDismiss: true
+        });
+      } else {
+        // Tell the user the operation failed:
+        await createErrorNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Failed to create the page', 'hostinger-easy-onboarding'), {
+          type: 'snackbar'
+        });
+      }
+    } catch (error) {
+      // Handle unexpected errors
+      await createErrorNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('An unexpected error occurred. Please try again.', 'hostinger-easy-onboarding'), {
         type: 'snackbar'
       });
     }
@@ -196,13 +203,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__);
 
 
 
 
 
+
+
+/**
+ * DeletePageButton component renders a button to delete a page.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {number} props.pageId - The ID of the page to delete.
+ * @example
+ * return (
+ *   <DeletePageButton pageId={1} />
+ * )
+ */
 
 const DeletePageButton = ({
   pageId
@@ -211,37 +233,41 @@ const DeletePageButton = ({
     createSuccessNotice,
     createErrorNotice
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)(_wordpress_notices__WEBPACK_IMPORTED_MODULE_0__.store);
-  // useSelect returns a list of selectors if you pass the store handle
-  // instead of a callback:
   const {
     getLastEntityDeleteError
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useSelect)(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_1__.store);
+  const {
+    deleteEntityRecord
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_1__.store);
+
+  /**
+   * Handles the delete operation for the page.
+   * It confirms the action, deletes the page, and shows success or error notices.
+   */
   const handleDelete = async () => {
-    // Confirm the deletion with confirm dialog
-    const isConfirmed = window.confirm('Are you sure you want to delete this page?');
+    const isConfirmed = window.confirm((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Are you sure you want to delete this page?', 'hostinger-easy-onboarding'));
     if (!isConfirmed) {
       return;
     }
-    const success = await deleteEntityRecord('postType', 'page', pageId);
-    if (success) {
-      // Tell the user the operation succeeded:
-      createSuccessNotice('The page was deleted!', {
-        type: 'snackbar'
-      });
-    } else {
-      // We use the selector directly to get the fresh error *after* the deleteEntityRecord
-      // have failed.
-      const lastError = getLastEntityDeleteError('postType', 'page', pageId);
-      const message = (lastError?.message || 'There was an error.') + ' Please refresh the page and try again.';
-      // Tell the user how exactly the operation has failed:
-      createErrorNotice(message, {
+    try {
+      const success = await deleteEntityRecord('postType', 'page', pageId);
+      if (success) {
+        createSuccessNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('The page was deleted!', 'hostinger-easy-onboarding'), {
+          type: 'snackbar'
+        });
+      } else {
+        const lastError = getLastEntityDeleteError('postType', 'page', pageId);
+        const message = (lastError?.message || (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('There was an error.', 'hostinger-easy-onboarding')) + (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)(' Please refresh the page and try again.', 'hostinger-easy-onboarding');
+        createErrorNotice(message, {
+          type: 'snackbar'
+        });
+      }
+    } catch (error) {
+      createErrorNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('An unexpected error occurred. Please try again.', 'hostinger-easy-onboarding'), {
         type: 'snackbar'
       });
     }
   };
-  const {
-    deleteEntityRecord
-  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.useDispatch)(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_1__.store);
   const {
     isDeleting,
     error
@@ -251,23 +277,23 @@ const DeletePageButton = ({
   }), [pageId]);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
     if (error) {
-      // Display the error
+      createErrorNotice((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('An error occurred while deleting the page.', 'hostinger-easy-onboarding'), {
+        type: 'snackbar'
+      });
     }
   }, [error]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Button, {
     variant: "secondary",
     onClick: handleDelete,
     disabled: isDeleting,
     size: "small",
-    tooltip: "Delete page",
+    tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Delete page', 'hostinger-easy-onboarding'),
     showTooltip: true,
-    label: "Delete page",
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Delete page', 'hostinger-easy-onboarding'),
     icon: "trash",
     iconSize: 12,
     className: "delete-page-button",
-    children: isDeleting ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Spinner, {})
-    }) : ' '
+    children: isDeleting ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Spinner, {}) : ' '
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DeletePageButton);
@@ -340,8 +366,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 /**
@@ -379,29 +408,35 @@ function PageForm({
   onCancel,
   onSave
 }) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: "my-gutenberg-form",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.TextControl, {
-      label: "Page title:",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.TextControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Page title:', 'hostinger-easy-onboarding'),
       value: title,
       onChange: onChangeTitle
-    }), lastError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+    }), lastError ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
       className: "form-error",
-      children: ["Error: ", lastError.message]
-    }) : false, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      children: [(0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Error:', 'hostinger-easy-onboarding'), " ", lastError.message]
+    }) : false, /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
       className: "form-buttons",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Button, {
-        onClick: onSave,
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Button, {
+        onClick: async () => {
+          try {
+            await onSave();
+          } catch (error) {
+            console.error((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('An error occurred while saving:', 'hostinger-easy-onboarding'), error);
+          }
+        },
         variant: "primary",
         disabled: !hasEdits || isSaving,
-        children: isSaving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Spinner, {}), "Saving"]
-        }) : 'Save'
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Button, {
+        children: isSaving ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Spinner, {}), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Saving', 'hostinger-easy-onboarding')]
+        }) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Save', 'hostinger-easy-onboarding')
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Button, {
         onClick: onCancel,
         variant: "tertiary",
         disabled: isSaving,
-        children: "Cancel"
+        children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Cancel', 'hostinger-easy-onboarding')
       })]
     })]
   });
@@ -425,9 +460,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/core-data */ "@wordpress/core-data");
 /* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _DeletePageButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DeletePageButton */ "./src/components/DeletePageButton.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _DeletePageButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./DeletePageButton */ "./src/components/DeletePageButton.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__);
+
+
+
 
 
 
@@ -447,17 +491,17 @@ __webpack_require__.r(__webpack_exports__);
 
 const PageEditButton = ({
   postID
-}) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+}) => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
   variant: "primary",
   href: `/wp-admin/post.php?post=${postID}&action=edit`,
   size: "small",
-  tooltip: "Edit Page",
+  tooltip: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit Page', 'hostinger-easy-onboarding'),
   showTooltip: true,
-  label: "Edit Page",
+  label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit Page', 'hostinger-easy-onboarding'),
   icon: "edit",
   iconSize: 12,
   className: "edit-page-button",
-  children: "Edit"
+  children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Edit', 'hostinger-easy-onboarding')
 });
 
 /**
@@ -481,41 +525,47 @@ function PagesList({
   pages,
   currentPage = null
 }) {
+  const [error, setError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useState)(null);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_4__.useEffect)(() => {
+    if (error) {
+      console.error(error);
+    }
+  }, [error]);
   if (!hasResolved) {
-    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Spinner, {});
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Spinner, {});
   }
   if (!pages?.length) {
-    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-      children: "No results"
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('No results', 'hostinger-easy-onboarding')
     });
   }
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("table", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("table", {
     className: "wp-list-table widefat fixed striped table-view-list",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("thead", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("tr", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("th", {
           className: "manage-column column-primary",
-          children: "Title"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
+          children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Title', 'hostinger-easy-onboarding')
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("th", {
           className: "manage-column",
           style: {
             width: 120
           },
-          children: "Actions"
+          children: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Actions', 'hostinger-easy-onboarding')
         })]
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tbody", {
-      children: pages?.map(page => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
-          children: [(0,_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__.decodeEntities)(page.title.rendered), "  "]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
-          children: currentPage !== page.id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ButtonGroup, {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(PageEditButton, {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("tbody", {
+      children: pages?.map(page => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("tr", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
+          children: (0,_wordpress_html_entities__WEBPACK_IMPORTED_MODULE_0__.decodeEntities)(page.title.rendered)
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
+          children: currentPage !== page.id ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.ButtonGroup, {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(PageEditButton, {
               postID: page.id
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_DeletePageButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_DeletePageButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
               pageId: page.id
             })]
-          }) : 'Current page'
+          }) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_5__.__)('Current page', 'hostinger-easy-onboarding')
         })]
       }, page.id))
     })]
@@ -640,6 +690,18 @@ __webpack_require__.r(__webpack_exports__);
  * @exports CreatePageButton
  * @exports Notifications
  */
+
+
+/***/ }),
+
+/***/ "./src/styles.scss":
+/*!*************************!*\
+  !*** ./src/styles.scss ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
 
 
 /***/ }),
@@ -823,8 +885,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_core_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _components_editPagesIcon__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/editPagesIcon */ "./src/components/editPagesIcon.js");
 /* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components */ "./src/components/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _styles_scss__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./styles.scss */ "./src/styles.scss");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__);
+
 
 
 
@@ -837,24 +901,21 @@ __webpack_require__.r(__webpack_exports__);
 const PluginSidebar = wp.editor.PluginSidebar;
 
 /**
- * PagesSearchControl component
+ * PagesSearchControl component renders the sidebar for searching and managing pages.
  *
- * This component provides a search control for pages within the Gutenberg editor.
- * It uses the `useSelect` hook to fetch pages based on the search term.
- *
- * @returns {JSX.Element} The rendered component
+ * @component
+ * @example
+ * return (
+ *   <PagesSearchControl />
+ * )
  */
 const PagesSearchControl = () => {
-  // State to keep track of the search term entered by the user
   const [searchTerm, setSearchTerm] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)('');
-
-  // Fetch pages using the `useSelect` hook based on the search term
   const {
     pages,
     hasResolved,
     currentPage
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => {
-    // Create a query object for fetching pages, use searchTerm if available
     const query = searchTerm ? {
       search: searchTerm
     } : {};
@@ -863,20 +924,21 @@ const PagesSearchControl = () => {
       currentPage: wp.data.select('core/editor').getCurrentPostId(),
       hasResolved: select(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_5__.store).hasFinishedResolution('getEntityRecords', ['postType', 'page', query])
     };
-  }, [searchTerm] // Re-run this effect when searchTerm changes
-  );
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(PluginSidebar, {
+  }, [searchTerm]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(PluginSidebar, {
     name: "gutenberg_edit_pages",
     icon: _components_editPagesIcon__WEBPACK_IMPORTED_MODULE_6__["default"],
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Edit Pages', 'hostinger-easy-onboarding'),
     className: "gutenberg-edit-pages",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, {
+    isPinnable: true,
+    isPinned: true,
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, {
       className: "gutenberg-edit-pages-panel",
       initialOpen: true,
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
         title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Search Pages', 'hostinger-easy-onboarding'),
         initialOpen: true,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SearchControl, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SearchControl, {
           __nextHasNoMarginBottom: true,
           label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Search pages', 'hostinger-easy-onboarding'),
           placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Search pages', 'hostinger-easy-onboarding'),
@@ -884,57 +946,48 @@ const PagesSearchControl = () => {
           value: searchTerm,
           className: "gutenberg-edit-pages-search",
           help: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Search for pages by title', 'hostinger-easy-onboarding')
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components__WEBPACK_IMPORTED_MODULE_7__.PagesList, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components__WEBPACK_IMPORTED_MODULE_7__.PagesList, {
           hasResolved: hasResolved,
           pages: pages,
           currentPage: currentPage
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components__WEBPACK_IMPORTED_MODULE_7__.CreatePageButton, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components__WEBPACK_IMPORTED_MODULE_7__.Notifications, {})]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components__WEBPACK_IMPORTED_MODULE_7__.CreatePageButton, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components__WEBPACK_IMPORTED_MODULE_7__.Notifications, {})]
       })
     })
   });
 };
 
 /**
- * Register the plugin sidebar
- *
- * This function registers a plugin sidebar in the Gutenberg editor with the name 'gutenberg_edit_pages'.
- * The sidebar contains the PagesSearchControl component.
+ * Registers the Gutenberg edit pages plugin.
  */
 (0,_wordpress_plugins__WEBPACK_IMPORTED_MODULE_1__.registerPlugin)('gutenberg-edit-pages', {
   render: PagesSearchControl
 });
 
 /**
- * Function to modify the button with aria-controls="gutenberg_edit_pages:gutenberg_edit_pages"
- *
- * This function selects the button with the specified aria-controls attribute and modifies its inner HTML
- * and class list. If the button does not exist, it logs a message to the console.
- * The function is called when the DOMContentLoaded event is fired.
- * @returns {void}
+ * Adds an icon and modifies the appearance of the edit pages button.
+ * This function is called after a delay and on specific events.
  */
 const addPagesBtn = () => {
-  // Select the button with the specified aria-controls attribute
-  const editPagesbutton = document.querySelector('button[aria-controls="gutenberg-edit-pages:gutenberg_edit_pages"]');
-
-  // SVG icon to display in the button
-  const icon = `
-        <svg width="12" height="12" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M6.9 14.2c0-.4.2-.8.6-.8h6.1c.4 0 .7.4.7.8s-.3.7-.7.7H7.5c-.4 0-.6-.3-.6-.7z"/>
-            <path fill-rule="evenodd" d="M4.3 12.7L13.1 3.8c0 0 0 0 0-.1s0 0 0-.1L12.2 2.8c0 0 0 0-.1 0s0 0-.1 0L6.7 8.3 3.3 11.7c0 0 0 0 0 0s0 0 0 0l-.4 1.4 1.3-.4c0 0 0 0 0 0s0 0 0 0zM5.6 7.2L2.2 10.6c-.1.1-.1.2-.2.3s-.1.1-.1.2-.1.1-.1.2l-.6 2c-.1.7-.2 1-.2 1.2.1.2.3.4.5.4.2.1.5 0 1.1-.2l2.1-.6c.1 0 .2 0 .3-.1s.1 0 .1-.1c.1 0 .2-.1.3-.2l8.7-8.8c.4-.4.6-.6.7-.9.1-.2.1-.4 0-.6-.1-.2-.3-.4-.7-.8L13.3 1.8c-.4-.4-.6-.6-.9-.7-.2-.1-.4-.1-.6 0-.2.1-.4.3-.8.7L5.6 7.2z"/>
-        </svg>
-    `;
-
-  // If the button is found, modify its content and classes
-  if (editPagesbutton) {
-    editPagesbutton.innerHTML = icon + ' ' + (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Edit Pages', 'hostinger-easy-onboarding');
-    editPagesbutton.classList.replace('is-compact', 'is-default');
-    editPagesbutton.classList.add('is-secondary');
+  try {
+    const editPagesbutton = document.querySelector('button[aria-controls="gutenberg-edit-pages:gutenberg_edit_pages"]');
+    const icon = `
+            <svg width="12" height="12" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M6.9 14.2c0-.4.2-.8.6-.8h6.1c.4 0 .7.4.7.8s-.3.7-.7.7H7.5c-.4 0-.6-.3-.6-.7z"/>
+                <path fill-rule="evenodd" d="M4.3 12.7L13.1 3.8c0 0 0 0 0-.1s0 0 0-.1L12.2 2.8c0 0 0 0-.1 0s0 0-.1 0L6.7 8.3 3.3 11.7c0 0 0 0 0 0s0 0 0 0l-.4 1.4 1.3-.4c0 0 0 0 0 0s0 0 0 0zM5.6 7.2L2.2 10.6c-.1.1-.1.2-.2.3s-.1.1-.1.2-.1.1-.1.2l-.6 2c-.1.7-.2 1-.2 1.2.1.2.3.4.5.4.2.1.5 0 1.1-.2l2.1-.6c.1 0 .2 0 .3-.1s.1 0 .1-.1c.1 0 .2-.1.3-.2l8.7-8.8c.4-.4.6-.6.7-.9.1-.2.1-.4 0-.6-.1-.2-.3-.4-.7-.8L13.3 1.8c-.4-.4-.6-.6-.9-.7-.2-.1-.4-.1-.6 0-.2.1-.4.3-.8.7L5.6 7.2z"/>
+            </svg>
+        `;
+    if (editPagesbutton) {
+      editPagesbutton.innerHTML = icon + ' ' + (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('Edit Pages', 'hostinger-easy-onboarding');
+      editPagesbutton.classList.replace('is-compact', 'is-default');
+      editPagesbutton.classList.add('is-secondary');
+    }
+  } catch (error) {
+    console.error((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('An error occurred while modifying the button:', 'hostinger-easy-onboarding'), error);
   }
 };
 
-// Call `addPagesBtn` function with a delay of 500ms
+// Call addPagesBtn after a delay and on specific events
 setTimeout(addPagesBtn, 500);
-// Add event listeners to execute `addPagesBtn` on DOMContentLoaded and click events
 window.addEventListener('DOMContentLoaded', addPagesBtn);
 window.addEventListener('click', addPagesBtn);
 })();
