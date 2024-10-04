@@ -16,11 +16,11 @@ import { __ } from '@wordpress/i18n';
  *   <DeletePageButton pageId={1} />
  * )
  */
-const DeletePageButton = ( { pageId } ) => {
+const DeletePageButton = ({ pageId }) => {
 	const { createSuccessNotice, createErrorNotice } =
-		useDispatch( noticesStore );
-	const { getLastEntityDeleteError } = useSelect( coreDataStore );
-	const { deleteEntityRecord } = useDispatch( coreDataStore );
+		useDispatch(noticesStore);
+	const { getLastEntityDeleteError } = useSelect(coreDataStore);
+	const { deleteEntityRecord } = useDispatch(coreDataStore);
 
 	/**
 	 * Handles the delete operation for the page.
@@ -34,7 +34,7 @@ const DeletePageButton = ( { pageId } ) => {
 			)
 		);
 
-		if ( ! isConfirmed ) {
+		if (!isConfirmed) {
 			return;
 		}
 
@@ -44,9 +44,9 @@ const DeletePageButton = ( { pageId } ) => {
 				'page',
 				pageId
 			);
-			if ( success ) {
+			if (success) {
 				createSuccessNotice(
-					__( 'The page was deleted!', 'hostinger-easy-onboarding' ),
+					__('The page was deleted!', 'hostinger-easy-onboarding'),
 					{
 						type: 'snackbar',
 					}
@@ -58,20 +58,20 @@ const DeletePageButton = ( { pageId } ) => {
 					pageId
 				);
 				const message =
-					( lastError?.message ||
+					(lastError?.message ||
 						__(
 							'There was an error.',
 							'hostinger-easy-onboarding'
-						) ) +
+						)) +
 					__(
 						' Please refresh the page and try again.',
 						'hostinger-easy-onboarding'
 					);
-				createErrorNotice( message, {
+				createErrorNotice(message, {
 					type: 'snackbar',
-				} );
+				});
 			}
-		} catch ( error ) {
+		} catch (error) {
 			createErrorNotice(
 				__(
 					'An unexpected error occurred. Please try again.',
@@ -85,23 +85,23 @@ const DeletePageButton = ( { pageId } ) => {
 	};
 
 	const { isDeleting, error } = useSelect(
-		( select ) => ( {
-			isDeleting: select( coreDataStore ).isDeletingEntityRecord(
+		(select) => ({
+			isDeleting: select(coreDataStore).isDeletingEntityRecord(
 				'postType',
 				'page',
 				pageId
 			),
-			error: select( coreDataStore ).getLastEntityDeleteError(
+			error: select(coreDataStore).getLastEntityDeleteError(
 				'postType',
 				'page',
 				pageId
 			),
-		} ),
-		[ pageId ]
+		}),
+		[pageId]
 	);
 
-	useEffect( () => {
-		if ( error ) {
+	useEffect(() => {
+		if (error) {
 			createErrorNotice(
 				__(
 					'An error occurred while deleting the page.',
@@ -112,22 +112,23 @@ const DeletePageButton = ( { pageId } ) => {
 				}
 			);
 		}
-	}, [ error ] );
+	}, [error]);
 
 	return (
 		<Button
 			variant="secondary"
-			onClick={ handleDelete }
-			disabled={ isDeleting }
+			onClick={handleDelete}
+			disabled={isDeleting}
 			size="small"
-			tooltip={ __( 'Delete page', 'hostinger-easy-onboarding' ) }
-			showTooltip={ true }
-			label={ __( 'Delete page', 'hostinger-easy-onboarding' ) }
+			tooltip={__('Delete page', 'hostinger-easy-onboarding')}
+			showTooltip={true}
+			label={__('Delete page', 'hostinger-easy-onboarding')}
 			icon="trash"
-			iconSize={ 12 }
+			iconSize={12}
 			className="delete-page-button"
+			style={{ color: 'red' }}
 		>
-			{ isDeleting ? <Spinner /> : ' ' }
+			{isDeleting ? <Spinner /> : ' '}
 		</Button>
 	);
 };

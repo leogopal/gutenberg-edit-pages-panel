@@ -296,6 +296,9 @@ const DeletePageButton = ({
     icon: "trash",
     iconSize: 12,
     className: "delete-page-button",
+    style: {
+      color: 'red'
+    },
     children: isDeleting ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Spinner, {}) : ' '
   });
 };
@@ -2127,6 +2130,9 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   modifyEditPagesButton: () => (/* binding */ modifyEditPagesButton)
+/* harmony export */ });
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
@@ -2168,6 +2174,42 @@ const PluginDocumentSettingPanel = wp.editor.PluginDocumentSettingPanel;
 const icon = 'edit-page';
 
 /**
+ * Modifies the "Edit Pages" button with new classes and visible text.
+ */
+const modifyEditPagesButton = () => {
+  try {
+    // Use querySelector to find the button with the specific attributes
+    const editPagesButton = document.querySelector('button[aria-controls="gutenberg-edit-pages-panel:gutenberg-edit-pages-panel"]');
+    if (editPagesButton) {
+      // Define a handler function to modify the button
+      const modifyButtonHandler = () => {
+        // Replace 'is-compact' with 'is-default'
+        editPagesButton.classList.replace('is-compact', 'is-default');
+
+        // Add 'is-secondary' class if it does not exist
+        if (!editPagesButton.classList.contains('is-secondary')) {
+          editPagesButton.classList.add('is-secondary', 'has-text', 'edit-pages-button');
+        }
+
+        // Set the button label as the visible text
+        editPagesButton.innerHTML = '<span class="dashicon dashicons dashicons-' + icon + '"></span>' + editPagesButton.getAttribute("aria-label");
+      };
+
+      // Attach the handler to the button's click event
+      document.addEventListener('click', modifyButtonHandler);
+
+      // Call the handler once to handle the initial modification
+      modifyButtonHandler();
+    } else {
+      // Button not found, retry after a short delay
+      setTimeout(modifyEditPagesButton, 300);
+    }
+  } catch (error) {
+    console.error((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)('An error occurred while modifying the button:', 'hostinger-easy-onboarding'), error);
+  }
+};
+
+/**
  * PagesSearchControl Component
  * Handles the sidebar rendering for searching and listing pages in Gutenberg editor.
  */
@@ -2193,6 +2235,12 @@ const PagesSearchControl = () => {
       hasResolved: select(_wordpress_core_data__WEBPACK_IMPORTED_MODULE_8__.store).hasFinishedResolution('getEntityRecords', selectorArgs)
     };
   }, [debouncedSearchTerm]);
+
+  // Ensure the button is modified after the component mounts
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    modifyEditPagesButton();
+  }, []); // Empty dependency array ensures this runs only once after the component mounts
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(PluginSidebarMoreMenuItem, {
       target: "gutenberg-edit-pages-panel",
