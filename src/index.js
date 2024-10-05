@@ -9,9 +9,14 @@ import Notifications from './components/Notifications';
 import editPagesIcon from './components/editPagesIcon';
 import useDebounce from './hooks/useDebounce'; // Import the debounce hook
 import { store as coreDataStore } from '@wordpress/core-data';
-import { Flex, FlexItem, FlexBlock, TextHighlight } from '@wordpress/components';
+import {
+	Flex,
+	FlexItem,
+	FlexBlock,
+	TextHighlight,
+} from '@wordpress/components';
 import SearchBar from './components/SearchBar';
-
+import './style.scss';
 
 const PluginSidebar = wp.editor.PluginSidebar;
 const PluginSidebarMoreMenuItem = wp.editor.PluginSidebarMoreMenuItem;
@@ -26,10 +31,11 @@ const icon = 'edit-page';
 export const modifyEditPagesButton = () => {
 	try {
 		// Use querySelector to find the button with the specific attributes
-		const editPagesButton = document.querySelector('button[aria-controls="gutenberg-edit-pages-panel:gutenberg-edit-pages-panel"]');
+		const editPagesButton = document.querySelector(
+			'button[aria-controls="gutenberg-edit-pages-panel:gutenberg-edit-pages-panel"]'
+		);
 
 		if (editPagesButton) {
-
 			// Define a handler function to modify the button
 			const modifyButtonHandler = () => {
 				// Replace 'is-compact' with 'is-default'
@@ -37,12 +43,19 @@ export const modifyEditPagesButton = () => {
 
 				// Add 'is-secondary' class if it does not exist
 				if (!editPagesButton.classList.contains('is-secondary')) {
-					editPagesButton.classList.add('is-secondary', 'has-text', 'edit-pages-button');
+					editPagesButton.classList.add(
+						'is-secondary',
+						'has-text',
+						'edit-pages-button'
+					);
 				}
 
 				// Set the button label as the visible text
-				editPagesButton.innerHTML = '<span class="dashicon dashicons dashicons-' + icon + '"></span>' + editPagesButton.getAttribute("aria-label");
-
+				editPagesButton.innerHTML =
+					'<span class="dashicon dashicons dashicons-' +
+					icon +
+					'"></span>' +
+					editPagesButton.getAttribute('aria-label');
 			};
 
 			// Attach the handler to the button's click event
@@ -50,13 +63,18 @@ export const modifyEditPagesButton = () => {
 
 			// Call the handler once to handle the initial modification
 			modifyButtonHandler();
-
 		} else {
 			// Button not found, retry after a short delay
 			setTimeout(modifyEditPagesButton, 300);
 		}
 	} catch (error) {
-		console.error(__('An error occurred while modifying the button:', 'hostinger-easy-onboarding'), error);
+		console.error(
+			__(
+				'An error occurred while modifying the button:',
+				'hostinger-easy-onboarding'
+			),
+			error
+		);
 	}
 };
 
@@ -65,16 +83,13 @@ export const modifyEditPagesButton = () => {
  * Handles the sidebar rendering for searching and listing pages in Gutenberg editor.
  */
 const PagesSearchControl = () => {
-
 	const [searchTerm, setSearchTerm] = useState('');
 	const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
 	// Fetch pages data using useSelect hook with the debounced search term
 	const { pages, hasResolved, currentPage } = useSelect(
 		(select) => {
-
 			const query = {};
-
 
 			if (debouncedSearchTerm) {
 				query.search = debouncedSearchTerm;
@@ -102,7 +117,6 @@ const PagesSearchControl = () => {
 		modifyEditPagesButton();
 	}, []); // Empty dependency array ensures this runs only once after the component mounts
 
-
 	return (
 		<Fragment>
 			<PluginSidebarMoreMenuItem
@@ -117,7 +131,6 @@ const PagesSearchControl = () => {
 				icon={icon}
 				title={__('Edit Pages', 'hostinger-easy-onboarding')}
 			>
-
 				<PageListPanel
 					searchTerm={searchTerm}
 					setSearchTerm={setSearchTerm}
@@ -126,7 +139,6 @@ const PagesSearchControl = () => {
 					pages={pages}
 					currentPage={currentPage}
 				/>
-
 
 				<Notifications />
 			</PluginSidebar>

@@ -1,7 +1,8 @@
 {
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
 	"landingPage": "/wp-admin/post.php?post=1&action=edit",
 	"plugins": [
-		"https://raw.githubusercontent.com/leogopal/gutenberg-edit-pages-panel/main/gutenberg-edit-pages-panel.zip"
+		"https://raw.githubusercontent.com/leogopal/gutenberg-edit-pages-panel/main/hostinger-gutenberg-edit-pages-panel.zip"
 	],
 	"steps": [
 		{
@@ -11,7 +12,7 @@
 			"step": "installPlugin",
 			"pluginZipFile": {
 				"resource": "url",
-				"url": "https://raw.githubusercontent.com/leogopal/gutenberg-edit-pages-panel/main/gutenberg-edit-pages-panel.zip"
+				"url": "https://raw.githubusercontent.com/leogopal/gutenberg-edit-pages-panel/main/hostinger-gutenberg-edit-pages-panel.zip"
 			}
 		},
 		{

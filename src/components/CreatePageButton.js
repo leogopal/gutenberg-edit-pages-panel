@@ -15,39 +15,35 @@ import CreatePageForm from './CreatePageForm';
  */
 export default function CreatePageButton() {
 	// State to manage the visibility of the modal
-	const [isOpen, setOpen] = useState(false);
+	const [ isOpen, setOpen ] = useState( false );
 
 	// Function to open the modal
-	const openModal = () => setOpen(true);
+	const openModal = () => setOpen( true );
 
 	// Function to close the modal
-	const closeModal = () => setOpen(false);
+	const closeModal = () => setOpen( false );
 
 	return (
 		<>
-			{ /* Button to trigger the modal */}
-			<Button
-				onClick={openModal}
-				variant="primary"
-				icon={'plus'}
-			>
-				{__('Add new Page', 'hostinger-easy-onboarding')}
+			{ /* Button to trigger the modal */ }
+			<Button onClick={ openModal } variant="primary" icon={ 'plus' }>
+				{ __( 'Add new Page', 'hostinger-easy-onboarding' ) }
 			</Button>
-			{ /* Modal that contains the CreatePageForm component */}
-			{isOpen && (
+			{ /* Modal that contains the CreatePageForm component */ }
+			{ isOpen && (
 				<Modal
-					onRequestClose={closeModal}
-					title={__(
+					onRequestClose={ closeModal }
+					title={ __(
 						'Create a new page',
 						'hostinger-easy-onboarding'
-					)}
+					) }
 				>
 					<CreatePageForm
-						onCancel={closeModal}
-						onSaveFinished={closeModal}
+						onCancel={ closeModal }
+						onSaveFinished={ closeModal }
 					/>
 				</Modal>
-			)}
+			) }
 		</>
 	);
 }
