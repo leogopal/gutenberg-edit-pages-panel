@@ -34,7 +34,7 @@ add_action(
 				'wp-plugins'
 			),
 			filemtime(plugin_dir_path(__FILE__) . 'build/index.js'),
-			true
+			false
 		);
 
 		wp_enqueue_style(
