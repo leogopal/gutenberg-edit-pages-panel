@@ -78,15 +78,4 @@ const PagesList = ({ hasResolved, pages, searchText, currentPage }) => {
 	);
 };
 
-PagesList.propTypes = {
-	hasResolved: PropTypes.bool.isRequired,
-	pages: PropTypes.array.isRequired,
-	currentPage: PropTypes.number,
-};
-
-PagesList.defaultProps = {
-	pages: [],
-	currentPage: null,
-};
-
 export default PagesList;

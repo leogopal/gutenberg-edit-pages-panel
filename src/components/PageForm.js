@@ -26,7 +26,7 @@ import { __ } from '@wordpress/i18n';
  *   />
  * )
  */
-export default function PageForm( {
+export default function PageForm({
 	title,
 	onChangeTitle,
 	hasEdits,
@@ -34,55 +34,40 @@ export default function PageForm( {
 	isSaving,
 	onCancel,
 	onSave,
-} ) {
+}) {
 	return (
 		<div className="my-gutenberg-form">
 			<TextControl
-				label={ __( 'Page title:', 'hostinger-easy-onboarding' ) }
-				value={ title }
-				onChange={ onChangeTitle }
+				label="Page title:"
+				value={title}
+				onChange={onChangeTitle}
 			/>
-			{ lastError ? (
-				<div className="form-error">
-					{ __( 'Error:', 'hostinger-easy-onboarding' ) }{ ' ' }
-					{ lastError.message }
-				</div>
+			{lastError ? (
+				<div className="form-error">Error: {lastError.message}</div>
 			) : (
 				false
-			) }
+			)}
 			<div className="form-buttons">
 				<Button
-					onClick={ async () => {
-						try {
-							await onSave();
-						} catch ( error ) {
-							console.error(
-								__(
-									'An error occurred while saving:',
-									'hostinger-easy-onboarding'
-								),
-								error
-							);
-						}
-					} }
+					onClick={onSave}
 					variant="primary"
-					disabled={ ! hasEdits || isSaving }
+					disabled={!hasEdits || isSaving}
 				>
-					{ isSaving ? (
+					{isSaving ? (
 						<>
 							<Spinner />
-							{ __( 'Saving', 'hostinger-easy-onboarding' ) }
+							Saving
 						</>
 					) : (
-						__( 'Save', 'hostinger-easy-onboarding' )
-					) }
+						'Save'
+					)}
 				</Button>
 				<Button
-					onClick={ onCancel }
+					onClick={onCancel}
 					variant="tertiary"
-					disabled={ isSaving }
+					disabled={isSaving}
 				>
-					{ __( 'Cancel', 'hostinger-easy-onboarding' ) }
+					Cancel
 				</Button>
 			</div>
 		</div>

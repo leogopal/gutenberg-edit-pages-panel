@@ -4,11 +4,6 @@
  */
 import PagesList from './PagesList';
 
-/**
- * Import the editPagesIcon component from the editPagesIcon module.
- * @module editPagesIcon
- */
-import editPagesIcon from './editPagesIcon';
 
 /**
  * Import the PageForm component from the PageForm module.
@@ -36,6 +31,10 @@ import Notifications from './Notifications';
 
 import DeletePageButton from './DeletePageButton';
 
+import PageListPanel from './PageListPanel';
+
+import SearchBar from './SearchBar';
+
 /**
  * Export the imported components (PagesList, editPagesIcon, PageForm, CreatePageForm, CreatePageButton, Notifications) for use in other modules.
  * @exports PagesList
@@ -47,10 +46,11 @@ import DeletePageButton from './DeletePageButton';
  */
 export {
 	PagesList,
-	editPagesIcon,
 	PageForm,
 	CreatePageForm,
 	CreatePageButton,
 	Notifications,
 	DeletePageButton,
+	PageListPanel,
+	SearchBar
 };

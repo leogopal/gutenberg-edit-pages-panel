@@ -16,53 +16,43 @@ import {
 	TextHighlight,
 } from '@wordpress/components';
 
-const PageListPanel = ( {
+const PageListPanel = ({
 	searchTerm,
 	setSearchTerm,
 	hasResolved,
 	pages,
 	currentPage,
-} ) => {
+}) => {
 	return (
-		<>
-			<Flex
-				align="center"
-				justify="space-between"
-				direction="column"
-				style={ {
-					marginBottom: '1rem',
-					padding: '1rem',
-				} }
-			>
-				<FlexBlock>
-					<p>Search for pages to edit or create a new one.</p>
-					<CreatePageButton />
-					<hr />
-					<FlexItem>
-						<SearchBar
-							searchTerm={ searchTerm }
-							setSearchTerm={ setSearchTerm }
-						/>
-						<PagesList
-							hasResolved={ hasResolved }
-							pages={ pages }
-							searchText={ setSearchTerm }
-							currentPage={ currentPage }
-						/>
-					</FlexItem>
-				</FlexBlock>
-			</Flex>
-		</>
+		<Flex
+			align="center"
+			justify="space-between"
+			direction="column"
+			style={{
+				marginBottom: '1rem',
+				padding: '1rem',
+			}}
+		>
+			<FlexBlock>
+				<p>Search for pages to edit or create a new one.</p>
+				<CreatePageButton />
+				<hr />
+				<FlexItem>
+					<SearchBar
+						searchTerm={searchTerm}
+						setSearchTerm={setSearchTerm}
+					/>
+					<PagesList
+						hasResolved={hasResolved}
+						pages={pages}
+						searchText={setSearchTerm}
+						currentPage={currentPage}
+					/>
+				</FlexItem>
+			</FlexBlock>
+		</Flex>
 	);
 };
 
 export default PageListPanel;
 
-// src/components/PageListPanel.js
-PageListPanel.propTypes = {
-	searchTerm: PropTypes.string.isRequired,
-	setSearchTerm: PropTypes.func.isRequired,
-	hasResolved: PropTypes.bool.isRequired,
-	pages: PropTypes.array.isRequired,
-	currentPage: PropTypes.number.isRequired,
-};

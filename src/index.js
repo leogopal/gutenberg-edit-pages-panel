@@ -3,40 +3,21 @@
 import { __ } from '@wordpress/i18n';
 import { Fragment, useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { registerPlugin } from '@wordpress/plugins';
+// import { PluginSidebar, PluginSidebarMoreMenuItem } from '@wordpress/editor';
+
 import PageListPanel from './components/PageListPanel';
 import Notifications from './components/Notifications';
-import editPagesIcon from './components/editPagesIcon';
+
 import useDebounce from './hooks/useDebounce'; // Import the debounce hook
 import { store as coreDataStore } from '@wordpress/core-data';
-import {
-	Flex,
-	FlexItem,
-	FlexBlock,
-	TextHighlight,
-	Button,
-} from '@wordpress/components';
-import { ContentSearch as SearchPages, SearchItem } from '@10up/block-components';
-
-const ExtendedSearchItem = (props) => {
-	// Add custom logic or state management here
-
-	return (
-		<div>
-			{/* You can add additional elements or logic here */}
-			<SearchItem {...props} />
-			{/* Add more elements or logic here */}
-		</div>
-	);
-};
-
-export default ExtendedSearchItem;
-import './style.scss';
-
+// Removed unused imports from '@wordpress/components'
+import { ContentSearch } from '@10up/block-components';
 const PluginSidebar = wp.editor.PluginSidebar;
 const PluginSidebarMoreMenuItem = wp.editor.PluginSidebarMoreMenuItem;
-const PluginDocumentSettingPanel = wp.editor.PluginDocumentSettingPanel;
 
+import { registerPlugin } from '@wordpress/plugins';
+import './style.scss';
+// Removed unused import 'ContentSearch' from '@10up/block-components'
 // Icon from Dashicons
 const icon = 'edit-page';
 
@@ -63,24 +44,25 @@ const modifyEditPagesButton = () => {
 						'has-text',
 						'edit-pages-button'
 					);
+				};
+
+				const buttonText = 'Edit Pages';
+				// check if the button has certain textContent
+				if (editPagesButton.innerText !== buttonText) {
+					// Set the button label as the visible text
+					console.log('editPagesButton.innerText', editPagesButton.innerText);
+					editPagesButton.innerText = buttonText;
 				}
 
-				// Set the button label as the visible text
-				editPagesButton.innerHTML =
-					'<span class="dashicon dashicons dashicons-' +
-					icon +
-					'"></span>' +
-					editPagesButton.getAttribute('aria-label');
-			};
+				// Attach the handler to the button's click event
+				document.addEventListener('click', modifyButtonHandler);
 
-			// Attach the handler to the button's click event
-			document.addEventListener('click', modifyButtonHandler);
+				// Call the handler once to handle the initial modification
+				modifyButtonHandler();
 
-			// Call the handler once to handle the initial modification
-			modifyButtonHandler();
-		} else {
-			// Button not found, retry after a short delay
-			setTimeout(modifyEditPagesButton, 300);
+			} else {
+				// Button not found, retry after a short delay
+				setTimeout(modifyEditPagesButton, 300);
 		}
 	} catch (error) {
 		console.error(
@@ -107,12 +89,12 @@ const PagesSearchControl = () => {
 	const { pages, hasResolved, currentPage } = useSelect(
 		(select) => {
 			const query = {};
-
+			// Removed unused state variables 'isPressed' and 'setIsPressed'
 			if (debouncedSearchTerm) {
 				query.search = debouncedSearchTerm;
 			}
 
-			query.status = ['publish', 'draft'];
+			// query.status = ['publish', 'draft'];
 
 			const selectorArgs = ['postType', 'page', query];
 			const records = select(coreDataStore).getEntityRecords(
@@ -131,35 +113,25 @@ const PagesSearchControl = () => {
 		[debouncedSearchTerm]
 	);
 
-	// Ensure the button is modified after the component mounts
+	//Ensure the button is modified after the component mounts
 	useEffect(() => {
 		modifyEditPagesButton();
 	}, []); // Empty dependency array ensures this runs only once after the component mounts
 
 	// Handler for the custom toggle button
-	const handleToggleSidebar = () => {
-		const isSidebarOpen = select('core/edit-post').is
+	// const handleToggleSidebar = () => {
+	// 	const isSidebarOpen = select('core/edit-post').is
 
-		// Toggle the sidebar using dispatch
-		dispatch('core/edit-post').togglePluginSidebar('gutenberg-edit-pages-panel');
+	// 	// Toggle the sidebar using dispatch
+	// 	dispatch('core/edit-post').togglePluginSidebar('gutenberg-edit-pages-panel');
 
-		// Update the button's aria-pressed state
-		setIsPressed(!isSidebarOpen);
-	};
+	// 	// Update the button's aria-pressed state
+	// 	setIsPressed(!isSidebarOpen);
+	// };
 
 	return (
 		<Fragment>
-			<Button
-				icon="edit"
-				isSecondary
-				isPressed={isPressed}
-				onClick={handleToggleSidebar}
-				aria-controls="gutenberg-edit-pages-panel"
-				aria-pressed={isPressed}
-				className="custom-toggle-sidebar-button"
-			>
-				{isPressed ? __('Close Edit Pages', 'hostinger-easy-onboarding') : __('Open Edit Pages', 'hostinger-easy-onboarding')}
-			</Button>
+
 
 			<PluginSidebarMoreMenuItem
 				target="gutenberg-edit-pages-panel"
@@ -173,37 +145,8 @@ const PagesSearchControl = () => {
 				icon={icon}
 				title={__('Edit Pages', 'hostinger-easy-onboarding')}
 				className="gutenberg-edit-pages-panel"
-				isSecondary={true}
-				sizes={"default"}
-				isSidebarOpen
 			>
-				<SearchPages
-					onSelectItem={(item) => {
-						window.location.href = `/wp-admin/post.php?post=${item.id}&action=edit`;
-						console.log(item);
-					}}
-					placeholder={__('Search pages', 'hostinger-easy-onboarding')}
-					showType={true}
-					showSearchResltInfo={false}
-					fetchInitialResults={true}
-					SearchItemComponent={({ item }) => (
-						<Flex>
-							<FlexItem>
-								<TextHighlight text={item.title.rendered} highlight={debouncedSearchTerm} />
-							</FlexItem>
-							<FlexBlock>
-								<Button
-									onClick={() => {
-										window.location.href = `/wp-admin/post.php?post=${item.id}&action=edit`;
-									}}
-									isSecondary
-								>
-									{__('Edit', 'hostinger-easy-onboarding')}
-								</Button>
-							</FlexBlock>
-						</Flex>
-					)}
-				/>
+
 				<PageListPanel
 					searchTerm={searchTerm}
 					setSearchTerm={setSearchTerm}

@@ -1,1 +1,1 @@
-{"version":3,"file":"./style-index.css","mappings":";;;AAAA;EACI;AACJ,C","sources":["webpack://@hostinger-gutenberg/edit-pages/./src/style.scss"],"sourcesContent":["button.components-button.has-icon.is-secondary svg {\n    margin-right: 6px;\n}\n"],"names":[],"sourceRoot":""}
+{"version":3,"file":"./style-index.css","mappings":";;;AAAA;EACI;AACJ,C","sources":["webpack://hostinger-gutenberg-edit-pages-panel/./src/style.scss"],"sourcesContent":["button.components-button.has-icon.is-secondary svg {\n    margin-right: 6px;\n}\n"],"names":[],"sourceRoot":""}

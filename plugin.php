@@ -19,33 +19,32 @@ defined('ABSPATH') || exit;
 add_action(
 	'enqueue_block_editor_assets',
 	function () {
+
+		// Automatically load imported dependencies and assets version.
+		$asset_file = include plugin_dir_path(__FILE__) . 'build/index.asset.php';
+
+		// Enqueue CSS dependencies.
+		foreach ($asset_file['dependencies'] as $style) {
+			wp_enqueue_style($style);
+		}
+
 		wp_enqueue_script(
-			'gutenberg_edit_pages_panel-script',
+			'gutenberg_edit_pages_panel',
 			plugin_dir_url(__FILE__) . 'build/index.js',
-			array(
-				'react-jsx-runtime',
-				'wp-components',
-				'wp-core-data',
-				'wp-data',
-				'wp-element',
-				'wp-html-entities',
-				'wp-i18n',
-				'wp-notices',
-				'wp-plugins'
-			),
+			$asset_file['dependencies'],
 			filemtime(plugin_dir_path(__FILE__) . 'build/index.js'),
 			false
 		);
 
 		wp_enqueue_style(
-			'gutenberg_edit_pages_panel-css',
+			'gutenberg_edit_pages_panel',
 			plugin_dir_url(__FILE__) . 'build/style-index.css',
 			array(),
 			filemtime(plugin_dir_path(__FILE__) . 'build/style-index.css')
 		);
 
-		load_plugin_textdomain('hostinger-easy-onboarding', false, plugin_dir_path(__FILE__) . 'languages');
-		wp_set_script_translations('gutenberg_edit_pages_panel-script', 'hostinger-easy-onboarding', plugin_dir_path(__FILE__) . 'languages');
+		// load_plugin_textdomain('hostinger-easy-onboarding', false, dirname(plugin_basename(__FILE__)) . '/languages');
+		// wp_set_script_translations('gutenberg_edit_pages_panel-script', 'hostinger-easy-onboarding', plugin_dir_path(__FILE__) . '/languages');
 	}
 
 );

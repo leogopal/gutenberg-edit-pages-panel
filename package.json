@@ -42,8 +42,7 @@
 		"@wordpress/data": "^10.9.0",
 		"@wordpress/element": "^6.9.0",
 		"@wordpress/i18n": "^5.9.0",
-		"@wordpress/notices": "^5.9.0",
-		"update": "^0.7.4"
+		"@wordpress/notices": "^5.9.0"
 	},
 	"devDependencies": {
 		"@wordpress/components": "^28.9.0",
@@ -74,43 +73,5 @@
 		"> 1%",
 		"last 2 versions",
 		"IE 11"
-	],
-	"wp": {
-		"plugin": {
-			"plugin": "gutenberg-edit-pages-panel",
-			"author": "Hostinger",
-			"authorURI": "https://www.hostinger.com/",
-			"license": "GPL-2.0-or-later",
-			"licenseURI": "https://www.gnu.org/licenses/gpl-2.0.html",
-			"version": "0.1.0",
-			"requires": "5.8",
-			"tested": "5.8",
-			"requiresPHP": "5.6",
-			"tags": [
-				"wordpress",
-				"gutenberg",
-				"block",
-				"editor",
-				"page",
-				"pages",
-				"panel",
-				"resource",
-				"edit",
-				"search",
-				"list",
-				"trash",
-				"create"
-			],
-			"textDomain": "hostinger-easy-onboarding",
-			"domainPath": "/languages",
-			"readme": "README.md",
-			"zip": "plugin.zip",
-			"packages": [
-				{
-					"type": "wp-plugin",
-					"dir": "build"
-				}
-			]
-		}
-	}
+	]
 }
