@@ -24,56 +24,53 @@ const icon = 'edit-page';
 /**
  * Modifies the "Edit Pages" button with new classes and visible text.
  */
-const modifyEditPagesButton = () => {
-	try {
-		// Use querySelector to find the button with the specific attributes
-		const editPagesButton = document.querySelector(
-			'button[aria-controls="gutenberg-edit-pages-panel:gutenberg-edit-pages-panel"]'
-		);
+// const modifyEditPagesButton = () => {
+// 	try {
+// 		// Use querySelector to find the button with the specific attributes
+// 		const editPagesButton = document.querySelector(
+// 			'button[aria-controls="gutenberg-edit-pages-panel:gutenberg-edit-pages-panel"]'
+// 		);
 
-		if (editPagesButton) {
-			// Define a handler function to modify the button
-			const modifyButtonHandler = () => {
-				// Replace 'is-compact' with 'is-default'
-				editPagesButton.classList.replace('is-compact', 'is-default');
+// 		if (editPagesButton) {
+// 			// Define a handler function to modify the button
+// 			const modifyButtonHandler = () => {
+// 				// Replace 'is-compact' with 'is-default'
+// 				editPagesButton.classList.replace('is-compact', 'is-default');
 
-				// Add 'is-secondary' class if it does not exist
-				if (!editPagesButton.classList.contains('is-secondary')) {
-					editPagesButton.classList.add(
-						'is-secondary',
-						'has-text',
-						'edit-pages-button'
-					);
-				};
+// 				// Add 'is-secondary' class if it does not exist
+// 				if (!editPagesButton.classList.contains('is-secondary')) {
+// 					editPagesButton.classList.add(
+// 						'is-secondary',
+// 						'has-text',
+// 						'edit-pages-button'
+// 					);
+// 				};
 
-				const buttonText = 'Edit Pages';
-				// check if the button has certain textContent
-				if (editPagesButton.innerText !== buttonText) {
-					// Set the button label as the visible text
-					console.log('editPagesButton.innerText', editPagesButton.innerText);
-					editPagesButton.innerText = buttonText;
-				}
+// 				const buttonText = 'Edit Pages';
+// 				// check if the button has certain textContent
+// 				if (editPagesButton.innerText !== buttonText) {
+// 					// Set the button label as the visible text
+// 					console.log('editPagesButton.innerText', editPagesButton.innerText);
+// 					editPagesButton.innerText = buttonText;
+// 				}
 
-				// Attach the handler to the button's click event
-				document.addEventListener('click', modifyButtonHandler);
+// 				// Attach the handler to the button's click event
+// 				document.addEventListener('click', modifyButtonHandler);
 
-				// Call the handler once to handle the initial modification
-				modifyButtonHandler();
+// 				// Call the handler once to handle the initial modification
+// 				modifyButtonHandler();
 
-			} else {
-				// Button not found, retry after a short delay
-				setTimeout(modifyEditPagesButton, 300);
-		}
-	} catch (error) {
-		console.error(
-			__(
-				'An error occurred while modifying the button:',
-				'hostinger-easy-onboarding'
-			),
-			error
-		);
-	}
-};
+// 			}
+// 	} catch (error) {
+// 		console.error(
+// 			__(
+// 				'An error occurred while modifying the button:',
+// 				'hostinger-easy-onboarding'
+// 			),
+// 			error
+// 		);
+// 	}
+// };
 
 /**
  * PagesSearchControl Component
@@ -115,7 +112,7 @@ const PagesSearchControl = () => {
 
 	//Ensure the button is modified after the component mounts
 	useEffect(() => {
-		modifyEditPagesButton();
+		// modifyEditPagesButton();
 	}, []); // Empty dependency array ensures this runs only once after the component mounts
 
 	// Handler for the custom toggle button
